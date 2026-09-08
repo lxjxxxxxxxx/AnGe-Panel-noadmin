@@ -61,3 +61,6 @@ uploads/*
 /ange-panel
 /main
 /ange-panel-new
+
+# 本地构建部署包
+/bin/

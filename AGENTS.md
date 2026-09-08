@@ -6,7 +6,7 @@ AnGe-Panel is a single-repository Go + Vue application.
 
 - Backend: Go module `sun-panel`, Gin, Gorm, SQLite/MySQL, sources at the repository root (`main.go`, `api/`, `router/`, `initialize/`, `models/`, `lib/`, `global/`, `structs/`).
 - Frontend: Vue 3 + Vite + TypeScript + Pinia + Naive UI under `src/`.
-- Built frontend output is served by the backend from `./web` at runtime. The committed `dist/` bundle is used by Docker and release packaging.
+- Built frontend output is served by the backend from `./web` at runtime. `dist/` is a build artifact and is never committed; Docker and release packaging generate it at build time (CI), so no frontend bundle exists in the repository.
 - Runtime mutable data lives in `conf/`, `database/`, `uploads/`, and `runtime/`; Docker maps these to `/data`.
 
 ## Important Compatibility Constraints
@@ -17,8 +17,7 @@ AnGe-Panel is a single-repository Go + Vue application.
 - Do not remove or casually regenerate committed seed/runtime assets:
   - `seed/database/database.db`
   - `seed/uploads/**`
-  - `dist/**`
-- Do not commit compiled binaries (`ange-panel`, `main`, `ange-panel-new`, ...). Build artifacts stay untracked (see `.gitignore`); Docker and GitHub Release both compile from source at build time, so no committed binary is ever required.
+- No build artifacts are committed: compiled binaries (`ange-panel`, `main`, `ange-panel-new`, ...) and frontend output (`dist/`, `web/`) all stay untracked (see `.gitignore`). Docker and GitHub Release compile/generate them from source at build time, so no committed artifact is ever required.
 - Do not overwrite user data paths (`database/`, `uploads/`, `conf/conf.ini`, `runtime/`) during development or migration work.
 - `conf/conf.example.ini` is the source template for generated config; keep it in sync when adding config keys.
 
@@ -31,7 +30,7 @@ Use the narrowest command that proves the change.
 - Frontend lint: `pnpm run lint`.
 - Backend compile: `go build ./main.go`.
 - Backend package checks: `go test ./...` if tests exist or backend behavior changed.
-- Docker image build expects `dist/` to already contain the frontend bundle: `docker build .`.
+- Docker image build generates the frontend bundle inside a builder stage and builds the Go binary from source; it does not require any committed build artifact.
 
 Notes:
 
@@ -80,7 +79,7 @@ Notes:
 
 ## Deployment Constraints
 
-- Dockerfile builds the Go binary in the repository root and copies committed `dist/` into `/app/web`.
+- Dockerfile builds the Go binary in the repository root and copies the CI-generated frontend bundle into `/app/web`.
 - Docker entrypoint initializes `/data/{conf,database,uploads,runtime}` and symlinks `/app/{conf,database,uploads,runtime}` to those persistent paths.
 - GitHub release workflow verifies `dist/index.html`, copies `dist/*` to `web/`, builds `ange-panel`, and packages `conf/` plus `web/`.
 - Docker deployment defaults to port `3005` and persists `/data/{conf,database,uploads,runtime}` for lossless upgrades.

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnGe-Panel 收藏助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 配置页 -->
+    <div id="configScreen">
+      <h1 class="logo">AnGe-Panel</h1>
+      <p class="subtitle">首次使用请填写服务器信息</p>
+
+      <div class="form-row">
+        <label for="backendUrl">服务器地址</label>
+        <input id="backendUrl" type="url" placeholder="http://192.168.1.100:3005" autocomplete="url">
+      </div>
+
+      <div class="form-row">
+        <label for="tokenInput">访问令牌</label>
+        <input id="tokenInput" type="password" placeholder="在面板「个人令牌」中生成">
+      </div>
+
+      <div class="form-actions">
+        <button id="saveConfigBtn" class="btn-primary">保存并连接</button>
+      </div>
+
+      <div id="configError" class="msg msg-error hidden"></div>
+      <div id="configLoading" class="msg hidden">⌛ 验证连接中...</div>
+    </div>
+
+    <!-- 保存页 -->
+    <div id="saveScreen" class="hidden">
+      <div class="top-bar">
+        <h1>保存到 AnGe-Panel</h1>
+        <button id="settingsBtn" class="btn-icon" title="修改服务器配置">⚙</button>
+      </div>
+
+      <div class="form-row">
+        <label for="typeSelect">分类</label>
+        <select id="typeSelect">
+          <option value="website">网站导航</option>
+          <option value="webpage">网页收藏</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label for="groupSelect">分组</label>
+        <select id="groupSelect">
+          <option value="">加载分组中...</option>
+        </select>
+        <div id="groupError" class="msg msg-error hidden"></div>
+      </div>
+
+      <div class="form-row">
+        <label for="titleInput">标题</label>
+        <input id="titleInput" type="text" placeholder="页面标题" maxlength="100">
+      </div>
+
+      <div class="form-row">
+        <label for="urlInput">网址</label>
+        <div class="input-with-btn">
+          <input id="urlInput" type="url" placeholder="页面地址">
+          <button id="stripSuffixBtn" class="btn-sm" title="去除 URL 后缀，仅保留域名">去除后缀</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="remarkInput">备注 <span class="optional">（可选）</span></label>
+        <input id="remarkInput" type="text" placeholder="添加备注" maxlength="200">
+      </div>
+
+      <div class="form-actions">
+        <button id="saveBtn" class="btn-primary" disabled>保存</button>
+      </div>
+
+      <div id="saveResult" class="msg hidden"></div>
+      <div id="loadingBar" class="loading-bar hidden">
+        <div id="loadingText" class="loading-text">保存中...</div>
+        <div class="loading-track"><div class="loading-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

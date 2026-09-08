@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnGe-Panel 设置</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app" class="options-page">
+    <h1>AnGe-Panel 设置</h1>
+
+    <div class="form-row">
+      <label for="optBackendUrl">服务器地址</label>
+      <input id="optBackendUrl" type="url" placeholder="http://192.168.1.100:3005">
+    </div>
+
+    <div class="form-row">
+      <label for="optTokenInput">访问令牌</label>
+      <input id="optTokenInput" type="password" placeholder="在面板「个人令牌」中生成">
+    </div>
+
+    <div class="form-actions">
+      <button id="optSaveBtn" class="btn-primary">保存</button>
+    </div>
+
+    <div id="optResult" class="msg hidden"></div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
